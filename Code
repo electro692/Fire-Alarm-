@@ -1,0 +1,48 @@
+#include <ESP32WiFi.h>
+#include <CTBot.h>
+#include <TimeLib.h> 
+#include <LiquidCrystal.h>
+#define timersetInterval
+#define Telegram
+CTBot myBot;
+String token = "5712619886:AAE_RrbutJxmEoIimF28dXBN38g6H8hQmHg"; //Auth code sent 
+via Email
+String ssid = "Dialog 4G 603"; //Wifi name
+String pass = "c697fBc3"; //Wifi Password
+int flag=0;
+void notifyOnFire()
+{
+ Serial.begin(9600);
+Serial.println("Starting Bot...");
+myBot.wifiConnect(ssid, pass);
+myBot.setTelegramToken(token);
+ int isButtonPressed = digitalRead(D1);
+ if (isButtonPressed==1 && flag==0) {
+ Serial.println("Fire in the House");
+ Serial.println("Alert : Fire in the House");
+ flag=1;
+ }
+ else if (isButtonPressed==0)
+ {
+ flag=0;
+ }
+}
+void setup()
+{
+Serial.begin(9600);
+Serial.println("Starting Bot...");
+myBot.wifiConnect(ssid, pass);
+myBot.setTelegramToken(token);
+pinMode(D1, INPUT_PULLUP);
+timersetInterval(1000L, notifyOnFire); 
+}
+LiquidCrystal LCD(22,23,5,18,19,21);
+void setup ()
+{
+ lcd.begin(16, 2);
+ lcd.clear();
+ lcd.print("How to Interface");
+ // go to row 1 column 0, note that this is indexed at 0
+ lcd.setCursor(0,1); 
+ lcd.print ("LCD with ESP32");
+}
